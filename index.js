@@ -263,7 +263,13 @@ function readStream (stream, encoding, length, limit, callback) {
         type: 'entity.too.large'
       }))
     } else if (decoder) {
-      buffer += decoder.write(chunk)
+      let testBuff = decoder.write(chunk);
+      let testBuff2 = '';
+      if (testBuff.indexOf('"Client": "COLLEAGUE"') !== -1 && testBuff.indexOf('"AwardYear": "2324"') !== -1 && testBuff.indexOf('"xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"') === -1) {
+        testBuff2 = testBuff.replace('"NonCustodialParentInformation"', ',"NonCustodialParentInformation"');
+        testBuff = testBuff2;
+      }
+      buffer += decoder.write(testBuff)
     } else {
       buffer.push(chunk)
     }
